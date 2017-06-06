@@ -5,11 +5,16 @@ import android.app.Application;
 import com.fatboyindustrial.gsonjodatime.DateTimeConverter;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.jakewharton.picasso.OkHttp3Downloader;
+import com.squareup.picasso.Picasso;
 
 import org.joda.time.DateTime;
 
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+import sharif.dagger2experiment.network.GithubService;
 import timber.log.Timber;
 
 /**
@@ -17,6 +22,9 @@ import timber.log.Timber;
  */
 
 public class MyApplication extends Application {
+
+    private GithubService githubService;
+    private Picasso picasso;
 
     @Override
     public void onCreate() {
@@ -41,12 +49,25 @@ public class MyApplication extends Application {
                 .build();
 
 
+        picasso = new Picasso.Builder(this)
+                .downloader(new OkHttp3Downloader(okHttpClient))
+                .build();
 
-
-    /*    new Retrofit.Builder()
+        Retrofit githubRetrofit = new Retrofit.Builder()
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .client(okHttpClient)
                 .baseUrl("https://api.github.com/")
-                .build()*/
+                .build();
+
+        githubService = githubRetrofit.create(GithubService.class);
     }
+
+    public GithubService getGithubService() {
+        return githubService;
+    }
+
+    public Picasso getPicasso() {
+        return picasso;
+    }
+
 }
