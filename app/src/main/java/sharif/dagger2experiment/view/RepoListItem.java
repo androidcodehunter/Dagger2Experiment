@@ -53,7 +53,18 @@ public class RepoListItem extends FrameLayout {
         super(context);
         this.picasso = picasso;
         inflate(getContext(), R.layout.list_item_repo, this);
+        initView();
         ButterKnife.bind(this);
+    }
+
+    private void initView() {
+        avatarImage = (ImageView) findViewById(R.id.user_avatar);
+        name = (TextView) findViewById(R.id.repo_name);
+        description = (TextView) findViewById(R.id.repo_description);
+        stars = (TextView) findViewById(R.id.repo_stars);
+        issues = (TextView) findViewById(R.id.repo_issues);
+        forks = (TextView) findViewById(R.id.repo_forks);
+        updatedAt = (TextView) findViewById(R.id.repo_updated_at);
     }
 
     public void setRepo(GithubRepo githubRepo) {
